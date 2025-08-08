@@ -137,6 +137,130 @@
       clip-path: path("M 50 91 C 35 78, 20 65, 12 50 C 5 35, 10 20, 25 15 C 35 12, 45 20, 50 30 C 55 20, 65 12, 75 15 C 90 20, 95 35, 88 50 C 80 65, 65 78, 50 91 Z");
       box-shadow: 0 0 20px #ff80aa;
     }
+
+    .rotate-warning {
+  position: fixed;
+  z-index: 99999;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, #111, #000);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+}
+
+.rotate-warning h1 {
+  font-size: 24px;
+  margin: 20px 0 10px;
+  animation: pulse 2s infinite;
+}
+
+.rotate-warning p {
+  font-size: 16px;
+  opacity: 0.8;
+}
+
+.phone-icon {
+  width: 100px;
+  height: 200px;
+  border: 6px solid white;
+  border-radius: 20px;
+  position: relative;
+  animation: rotatePhone 3s infinite ease-in-out;
+  transform-origin: center center;
+  margin-bottom: 20px;
+}
+
+.phone-icon::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 5px;
+  background: white;
+  border-radius: 10px;
+}
+
+@keyframes rotatePhone {
+  0% { transform: rotate(0deg); }
+  25% { transform: rotate(90deg); }
+  50% { transform: rotate(90deg); }
+  75% { transform: rotate(0deg); }
+  100% { transform: rotate(0deg); }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.7; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Ẩn cảnh báo khi xoay ngang */
+@media screen and (orientation: landscape) {
+  .rotate-warning {
+    display: none !important;
+  }
+}
+/* ảnh quay đi quay lại */
+@keyframes rainbow-animate {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.keypad button,
+.side-image {
+  animation: rainbow-animate 5s linear infinite;
+  background-origin: border-box;
+}
+
+/* hiệu ứng nút phím */
+.keypad button {
+  position: relative;
+  overflow: visible;
+}
+
+.keypad button:active::after {
+  content: "💖";
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: heartPop 0.6s ease forwards;
+  pointer-events: none;
+}
+
+@keyframes heartPop {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(0.6);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -30px) scale(1.2);
+  }
+}
+.keypad button {
+  transition: 0.2s ease;
+}
+
+.keypad button:active {
+  box-shadow: 0 0 25px #ff99cc, 0 0 40px #ff80bf inset;
+  transform: scale(0.95);
+}
+
+
+
+
+
   </style>
 </head>
 <body>
@@ -162,7 +286,11 @@
   </div>
 
    <div id="notice"></div>
-  <div id="rotateWarning">Xoay ngang điện thoại để xem </div>
+<div id="rotateWarning" class="rotate-warning">
+  <div class="phone-icon"></div>
+  <h1>Vui lòng xoay ngang thiết bị </h1>
+</div>
+
 
   <canvas id="matrixCanvas" style="display: none;"></canvas>
   <canvas id="dotCanvas" style="display: none;"></canvas>
@@ -183,6 +311,7 @@
   box-shadow: 0 0 30px #ff80aa;
 ">
 </div>
+
 
 
   <!-- TOÀN BỘ SCRIPT -->
@@ -216,10 +345,10 @@
   function checkPassword() {
     const correct = "1310";
     if (currentPassword === correct) {
-      showNotice("✅ Chính xác rồi! Đợi tí...", "#00ff88");
+      showNotice("✅ Chính xác rồi baby 😊", "#00ff88");
       setTimeout(() => startBirthday(), 1500);
     } else {
-      showNotice("❌ Sai mật khẩu rồi 😢!", "#ff5e5e");
+      showNotice("❌ Sai mật khẩu rồi baby 😢!", "#ff5e5e");
       clearPassword();
     }
   }
